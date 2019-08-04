@@ -31,9 +31,10 @@
 
 #define BC_ASSERT(cond) ((!(cond)) ? bc_assert(#cond,__FILE__,__LINE__) : bc_noassert())
 
-#include "bcmath_stl.h"
+#include <climits>
 #include <string.h>
 #include <stdlib.h>
+#include "bcmath_stl.h"
 
 static int bc_scale = 6;
 
