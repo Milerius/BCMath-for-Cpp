@@ -33,8 +33,9 @@
 
 #include <algorithm>
 #include <climits>
-#include <string.h>
-#include <stdlib.h>
+#include <cstddef>
+#include <cstring>
+#include <cstdlib>
 #include "bcmath_stl.h"
 
 static int bc_scale = 6;
@@ -62,7 +63,7 @@ static int bc_parse_number(const std::string &s, int &lsign, int &lint, int &ldo
         }
         i++;
     }
-    int len = s.length();
+    int len = static_cast<int>(s.length());
     if (i >= len) {
         return -1;
     }
@@ -110,7 +111,7 @@ static std::string bc_zero(int scale)
     if (scale == 0) {
         return ZERO;
     }
-    std::string result(scale + 2, '0');
+    std::string result(static_cast<std::size_t>(scale) + 2, '0');
     result[1] = '.';
     return result;
 }
@@ -209,9 +210,9 @@ bc_round(char *lhs, int lint, int ldot, int lfrac, int lscale, int scale, int si
     }
 
     if (lscale == scale || !add_trailing_zeroes) {
-        return std::string(std::string(lhs + lint).substr(0, lfrac + lscale - lint));
+        return std::string(std::string(lhs + lint).substr(0, static_cast<std::size_t>(lfrac + lscale - lint)));
     } else {
-        std::string result(std::string(lhs + lint).substr(0, lfrac + lscale - lint));
+        std::string result(std::string(lhs + lint).substr(0, static_cast<std::size_t>(lfrac + lscale - lint)));
         if (lscale == 0) {
             result += '.';
         }
@@ -273,7 +274,7 @@ bc_add_positive(const char *lhs, int lint, int ldot, int lfrac, int lscale, cons
     resint = cur_pos;
     BC_ASSERT (cur_pos > 0);
 
-    return bc_round((char *) result.data(), resint, resdot, resfrac, resscale, scale, sign, 1);
+    return bc_round((char *) result.data(), resint, resdot, resfrac, resscale, scale, sign, true);
 }
 
 static std::string
@@ -320,11 +321,11 @@ bc_sub_positive(const char *lhs, int lint, int ldot, int lfrac, int lscale, cons
     }
     resdot = cur_pos;
 
-    for (int i = 0; i < result_len; i++) {
+    for (auto idx = 0; idx < result_len; idx++) {
         um = next_um;
-        um += lhs[ldot - i - 1] - '0';
-        if (i < rlen) {
-            um -= rhs[rdot - i - 1] - '0';
+        um += lhs[ldot - idx - 1] - '0';
+        if (idx < rlen) {
+            um -= rhs[rdot - idx - 1] - '0';
         }
         if (um < 0) {
             next_um = -1;
@@ -338,7 +339,7 @@ bc_sub_positive(const char *lhs, int lint, int ldot, int lfrac, int lscale, cons
     resint = cur_pos;
     BC_ASSERT (cur_pos > 0);
 
-    return bc_round((char *) result.data(), resint, resdot, resfrac, resscale, scale, sign, 1);
+    return bc_round((char *) result.data(), resint, resdot, resfrac, resscale, scale, sign, true);
 }
 
 static std::string
@@ -390,7 +391,7 @@ bc_mul_positive(const char *lhs, int lint, int ldot, int lfrac, int lscale, cons
 
     char *data = (char *) malloc((result.length() + 1) * sizeof(char));
     sprintf(data, "%s", result.c_str());
-    std::string ret = bc_round(data, resint, resdot, resfrac, resscale, scale, sign, 0);
+    std::string ret = bc_round(data, resint, resdot, resfrac, resscale, scale, sign, false);
     free(data);
 
     return ret;
@@ -444,7 +445,7 @@ bc_div_positive(const char *lhs, int lint, int ldot, int lfrac, int lscale, cons
 
     if (cur_pow < -scale) {
         divider -= divider_skip;
-        divider_len += divider_skip;
+        //divider_len += divider_skip;
         free(dividend);
         free(divider);
         return bc_zero(scale);
@@ -508,13 +509,13 @@ bc_div_positive(const char *lhs, int lint, int ldot, int lfrac, int lscale, cons
     resscale = cur_pos - resfrac;
 
     divider -= divider_skip;
-    divider_len += divider_skip;
+    //divider_len += divider_skip;
     free(dividend);
     free(divider);
 
     char *data = (char *) malloc((result.length() + 1) * sizeof(char));
     sprintf(data, "%s", result.c_str());
-    std::string ret = bc_round(data, resint, resdot, resfrac, resscale, scale, sign, 0);
+    std::string ret = bc_round(data, resint, resdot, resfrac, resscale, scale, sign, false);
     free(data);
 
     return ret;
@@ -857,10 +858,10 @@ std::string BCMath::bcround(const std::string &lhs, int scale)
     int lsign, lint, ldot, lfrac, lscale;
     if (bc_parse_number(lhs, lsign, lint, ldot, lfrac, lscale) < 0) {
         std::cerr << "First parameter \"" << lhs.c_str() << "\" in function bcround is not a number" << std::endl;
-        return 0;
+        return "";
     }
 
-    int len = lhs.size();
+    int len = static_cast<int>(lhs.size());
     std::string result(len + 1, '0');
     for (int i = len - 1; i >= lint; --i) {
         result[i + 1] = lhs[i];
@@ -868,7 +869,7 @@ std::string BCMath::bcround(const std::string &lhs, int scale)
 
     char *data = (char *) malloc((result.length() + 1) * sizeof(char));
     sprintf(data, "%s", result.c_str());
-    std::string ret = bc_round(data, lint + 1, ldot + 1, lfrac + 1, lscale, scale, lsign, 1, 1);
+    std::string ret = bc_round(data, lint + 1, ldot + 1, lfrac + 1, lscale, scale, lsign, true, true);
     free(data);
 
     return ret;
