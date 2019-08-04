@@ -32,158 +32,240 @@
 
 */
 
-#define NOMINMAX
-#include<string>
-#include<iostream>
-#include<sstream>
+#include <string>
+#include <iostream>
+#include <sstream>
 #include <utility>
 
-class BCMath {
+class BCMath
+{
 
 public:
     BCMath() = default;
-    BCMath(const BCMath &o) = default;
-    BCMath(const char *num) : value(num) {  }
-    BCMath(std::string num) : value(std::move(num)) {  }
-    BCMath(int num) : value() { std::stringstream ss; ss << num; value = ss.str(); }
-    BCMath(long long num) : value() { std::stringstream ss; ss << num; value = ss.str(); }
-    BCMath(unsigned int num) : value() { std::stringstream ss; ss << num; value = ss.str(); }
-    BCMath(unsigned long long num) : value() { std::stringstream ss; ss << num; value = ss.str(); }
-    BCMath(float num) : value() { std::stringstream ss; ss << num; value = ss.str(); }
-    BCMath(double num) : value() { std::stringstream ss; ss << num; value = ss.str(); }
-    BCMath(long double num) { std::stringstream ss; ss << num; value = ss.str(); }
 
-    BCMath operator+(const BCMath& o) {
+    BCMath(const BCMath &o) = default;
+
+    BCMath(const char *num) : value(num)
+    {}
+
+    BCMath(std::string num) : value(std::move(num))
+    {}
+
+    BCMath(int num) : value()
+    {
+        std::stringstream ss;
+        ss << num;
+        value = ss.str();
+    }
+
+    BCMath(long long num) : value()
+    {
+        std::stringstream ss;
+        ss << num;
+        value = ss.str();
+    }
+
+    BCMath(unsigned int num) : value()
+    {
+        std::stringstream ss;
+        ss << num;
+        value = ss.str();
+    }
+
+    BCMath(unsigned long long num) : value()
+    {
+        std::stringstream ss;
+        ss << num;
+        value = ss.str();
+    }
+
+    BCMath(float num) : value()
+    {
+        std::stringstream ss;
+        ss << num;
+        value = ss.str();
+    }
+
+    BCMath(double num) : value()
+    {
+        std::stringstream ss;
+        ss << num;
+        value = ss.str();
+    }
+
+    BCMath(long double num)
+    {
+        std::stringstream ss;
+        ss << num;
+        value = ss.str();
+    }
+
+    BCMath operator+(const BCMath &o)
+    {
         return BCMath::bcadd(value, o.value);
     }
 
-    BCMath operator-(const BCMath& o) {
+    BCMath operator-(const BCMath &o)
+    {
         return BCMath::bcsub(value, o.value);
     }
 
-    BCMath operator*(const BCMath& o) {
+    BCMath operator*(const BCMath &o)
+    {
         return BCMath::bcmul(value, o.value);
     }
 
-    BCMath operator/(const BCMath& o) {
+    BCMath operator/(const BCMath &o)
+    {
         return BCMath::bcdiv(value, o.value);
     }
 
-    BCMath operator%(const BCMath& o) {
+    BCMath operator%(const BCMath &o)
+    {
         return BCMath::bcmod(value, o.value);
     }
 
-    BCMath operator^(const BCMath& o) {
+    BCMath operator^(const BCMath &o)
+    {
         return BCMath::bcpow(value, o.value);
     }
 
-    void operator+=(const BCMath& o) {
+    void operator+=(const BCMath &o)
+    {
         value = BCMath::bcadd(value, o.value);
     }
-    void operator-=(const BCMath& o) {
+
+    void operator-=(const BCMath &o)
+    {
         value = BCMath::bcsub(value, o.value);
     }
-    void operator*=(const BCMath& o) {
+
+    void operator*=(const BCMath &o)
+    {
         value = BCMath::bcmul(value, o.value);
     }
-    void operator/=(const BCMath& o) {
+
+    void operator/=(const BCMath &o)
+    {
         value = BCMath::bcdiv(value, o.value);
     }
-    void operator^=(const BCMath& o) {
+
+    void operator^=(const BCMath &o)
+    {
         value = BCMath::bcpow(value, o.value);
     }
 
-    bool operator > (const BCMath& o) {
-        return BCMath::bccomp(value, o.value)>0;
-    }
-    bool operator >= (const BCMath& o) {
-        return BCMath::bccomp(value, o.value)>=0;
-    }
-    bool operator == (const BCMath& o) {
-        return BCMath::bccomp(value, o.value)==0;
-    }
-    bool operator < (const BCMath& o) {
-        return BCMath::bccomp(value, o.value)<0;
-    }
-    bool operator <= (const BCMath& o) {
-        return BCMath::bccomp(value, o.value)<=0;
+    bool operator>(const BCMath &o)
+    {
+        return BCMath::bccomp(value, o.value) > 0;
     }
 
-    int toInt() {
+    bool operator>=(const BCMath &o)
+    {
+        return BCMath::bccomp(value, o.value) >= 0;
+    }
+
+    bool operator==(const BCMath &o)
+    {
+        return BCMath::bccomp(value, o.value) == 0;
+    }
+
+    bool operator<(const BCMath &o)
+    {
+        return BCMath::bccomp(value, o.value) < 0;
+    }
+
+    bool operator<=(const BCMath &o)
+    {
+        return BCMath::bccomp(value, o.value) <= 0;
+    }
+
+    int toInt()
+    {
         std::istringstream buffer(value);
         int ret;
         buffer >> ret;
         return ret;
     }
 
-    unsigned int toUInt() {
+    unsigned int toUInt()
+    {
         std::istringstream buffer(value);
         unsigned int ret;
         buffer >> ret;
         return ret;
     }
 
-    long long toLongLong() {
+    long long toLongLong()
+    {
         std::istringstream buffer(value);
         long long ret;
         buffer >> ret;
         return ret;
     }
 
-    unsigned long long toULongLong() {
+    unsigned long long toULongLong()
+    {
         std::istringstream buffer(value);
         unsigned long long ret;
         buffer >> ret;
         return ret;
     }
 
-    long double toLongDouble() {
+    long double toLongDouble()
+    {
         std::istringstream buffer(value);
         long double ret;
         buffer >> ret;
         return ret;
     }
 
-    double toDouble() {
+    double toDouble()
+    {
         std::istringstream buffer(value);
         double ret;
         buffer >> ret;
         return ret;
     }
 
-    float toFloat() {
+    float toFloat()
+    {
         std::istringstream buffer(value);
         float ret;
         buffer >> ret;
         return ret;
     }
 
-    std::string toString() {
+    std::string toString()
+    {
         return value;
     }
 
-    void round(int scale) {
-        if(scale>=1)
+    void round(int scale)
+    {
+        if (scale >= 1)
             value = BCMath::bcround(value, scale);
     }
 
-    std::string getIntPart() {
+    std::string getIntPart()
+    {
         std::size_t dot = value.find('.');
-        if(dot != std::string::npos) {
-            if(dot == 0)
+        if (dot != std::string::npos) {
+            if (dot == 0)
                 return std::string("0");
-            if(dot == 1 && value[0] == '-')
+            if (dot == 1 && value[0] == '-')
                 return std::string("-0");
             return value.substr(0, dot);
-        }else{
+        } else {
             return value;
         }
     }
 
-    std::string getDecPart() {
+    std::string getDecPart()
+    {
         std::size_t dot = value.find('.');
-        if(dot != std::string::npos)
-            return value.length()>dot+1?value.substr(dot+1):std::string("0");
+        if (dot != std::string::npos)
+            return value.length() > dot + 1 ? value.substr(dot + 1) : std::string("0");
         else
             return std::string("0");
     }
@@ -192,23 +274,23 @@ private:
     std::string value;
 
 public:
-    static void bcscale (int scale);
+    static void bcscale(int scale);
 
-    static std::string bcdiv (const std::string &lhs, const std::string &rhs, int scale = INT_MIN);
+    static std::string bcdiv(const std::string &lhs, const std::string &rhs, int scale = INT_MIN);
 
-    static std::string bcmod (const std::string &lhs, const std::string &rhs);
+    static std::string bcmod(const std::string &lhs, const std::string &rhs);
 
-    static std::string bcpow (const std::string &lhs, const std::string &rhs);
+    static std::string bcpow(const std::string &lhs, const std::string &rhs);
 
-    static std::string bcadd (const std::string &lhs, const std::string &rhs, int scale = INT_MIN);
+    static std::string bcadd(const std::string &lhs, const std::string &rhs, int scale = INT_MIN);
 
-    static std::string bcsub (const std::string &lhs, const std::string &rhs, int scale = INT_MIN);
+    static std::string bcsub(const std::string &lhs, const std::string &rhs, int scale = INT_MIN);
 
-    static std::string bcmul (const std::string &lhs, const std::string &rhs, int scale = INT_MIN);
+    static std::string bcmul(const std::string &lhs, const std::string &rhs, int scale = INT_MIN);
 
-    static std::string bcround (const std::string &lhs, int scale = INT_MIN);
+    static std::string bcround(const std::string &lhs, int scale = INT_MIN);
 
-    static int bccomp (const std::string &lhs, const std::string &rhs, int scale = INT_MIN);
+    static int bccomp(const std::string &lhs, const std::string &rhs, int scale = INT_MIN);
 
 };
 
