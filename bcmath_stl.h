@@ -32,17 +32,19 @@
 
 */
 
+#define NOMINMAX
 #include<string>
 #include<iostream>
 #include<sstream>
+#include <utility>
 
 class BCMath {
 
 public:
-    BCMath() { }
-    BCMath(const BCMath &o) : value(o.value) { }
+    BCMath() = default;
+    BCMath(const BCMath &o) = default;
     BCMath(const char *num) : value(num) {  }
-    BCMath(std::string num) : value(num) {  }
+    BCMath(std::string num) : value(std::move(num)) {  }
     BCMath(int num) : value() { std::stringstream ss; ss << num; value = ss.str(); }
     BCMath(long long num) : value() { std::stringstream ss; ss << num; value = ss.str(); }
     BCMath(unsigned int num) : value() { std::stringstream ss; ss << num; value = ss.str(); }
