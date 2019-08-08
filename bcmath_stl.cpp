@@ -32,7 +32,6 @@
 #define BC_ASSERT(cond) ((!(cond)) ? bc_assert(#cond,__FILE__,__LINE__) : bc_noassert())
 
 #include <algorithm>
-#include <climits>
 #include <cstddef>
 #include <cstring>
 #include <cstdlib>
@@ -237,7 +236,7 @@ bc_add_positive(const char *lhs, int lint, int ldot, int lfrac, int lscale, cons
     std::string result(result_size, '0');
 
     int i, um = 0;
-    int cur_pos = result_size;
+    auto cur_pos = result_size;
     int was_frac = 0;
     for (i = result_scale - 1; i >= 0; i--) {
         if (i < lscale) {
@@ -253,7 +252,7 @@ bc_add_positive(const char *lhs, int lint, int ldot, int lfrac, int lscale, cons
             was_frac = 1;
         }
     }
-    resscale = result_size - cur_pos;
+    resscale = static_cast<int>(result_size - cur_pos);
     resfrac = cur_pos;
     if (was_frac) {
         result[--cur_pos] = '.';
@@ -288,7 +287,7 @@ bc_sub_positive(const char *lhs, int lint, int ldot, int lfrac, int lscale, cons
 
     int result_len = llen;
     int result_scale = std::max(lscale, rscale);
-    int result_size = result_len + result_scale + 3;
+    std::size_t result_size = result_len + result_scale + 3;
     std::string result(result_size, '0');
 
     int i, um = 0, next_um = 0;

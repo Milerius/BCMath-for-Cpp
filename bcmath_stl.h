@@ -32,6 +32,7 @@
 
 */
 
+#include <climits>
 #include <string>
 #include <iostream>
 #include <sstream>
