@@ -32,6 +32,7 @@
 
 */
 
+#include <limits>
 #include <climits>
 #include <string>
 #include <iostream>
@@ -283,15 +284,15 @@ public:
 
     static std::string bcpow(const std::string &lhs, const std::string &rhs);
 
-    static std::string bcadd(const std::string &lhs, const std::string &rhs, int scale = INT_MIN);
+    static std::string bcadd(const std::string &lhs, const std::string &rhs, int scale = std::numeric_limits<int>::min());
 
-    static std::string bcsub(const std::string &lhs, const std::string &rhs, int scale = INT_MIN);
+    static std::string bcsub(const std::string &lhs, const std::string &rhs, int scale = std::numeric_limits<int>::min());
 
-    static std::string bcmul(const std::string &lhs, const std::string &rhs, int scale = INT_MIN);
+    static std::string bcmul(const std::string &lhs, const std::string &rhs, int scale = std::numeric_limits<int>::min());
 
-    static std::string bcround(const std::string &lhs, int scale = INT_MIN);
+    static std::string bcround(const std::string &lhs, int scale = std::numeric_limits<int>::min());
 
-    static int bccomp(const std::string &lhs, const std::string &rhs, int scale = INT_MIN);
+    static int bccomp(const std::string &lhs, const std::string &rhs, int scale = std::numeric_limits<int>::min());
 
 };
 

@@ -564,7 +564,7 @@ void BCMath::bcscale(int scale)
 
 std::string BCMath::bcdiv(const std::string &lhs, const std::string &rhs, int scale)
 {
-    if (scale == INT_MIN) {
+    if (scale == std::numeric_limits<int>::min()) {
         scale = bc_scale;
     }
     if (scale < 0) {
@@ -712,7 +712,7 @@ std::string BCMath::bcadd(const std::string &lhs, const std::string &rhs, int sc
         return bcadd(lhs, ZERO, scale);
     }
 
-    if (scale == INT_MIN) {
+    if (scale == std::numeric_limits<int>::min()) {
         scale = bc_scale;
     }
     if (scale < 0) {
@@ -744,7 +744,7 @@ std::string BCMath::bcsub(const std::string &lhs, const std::string &rhs, int sc
         return bcsub(lhs, ZERO, scale);
     }
 
-    if (scale == INT_MIN) {
+    if (scale == std::numeric_limits<int>::min()) {
         scale = bc_scale;
     }
     if (scale < 0) {
@@ -778,7 +778,7 @@ std::string BCMath::bcmul(const std::string &lhs, const std::string &rhs, int sc
         return bcmul(lhs, ZERO, scale);
     }
 
-    if (scale == INT_MIN) {
+    if (scale == std::numeric_limits<int>::min()) {
         scale = bc_scale;
     }
     if (scale < 0) {
@@ -811,7 +811,7 @@ int BCMath::bccomp(const std::string &lhs, const std::string &rhs, int scale)
         return BCMath::bccomp(lhs, ZERO, scale);
     }
 
-    if (scale == INT_MIN) {
+    if (scale == std::numeric_limits<int>::min()) {
         scale = bc_scale;
     }
     if (scale < 0) {
@@ -845,7 +845,7 @@ std::string BCMath::bcround(const std::string &lhs, int scale)
         return BCMath::bcround(ZERO, scale);
     }
 
-    if (scale == INT_MIN) {
+    if (scale == std::numeric_limits<int>::min()) {
         scale = bc_scale;
     }
 
